@@ -5,9 +5,6 @@ extends Node2D
 # Emitted when the player pressed `ui_accept` or `ui_cancel`.
 signal target_selected(battler)
 
-onready var _anim_player = $Sprite/AnimationPlayer
-onready var _tween = $Tween
-
 # Duration of the tween that moves the arrow to another target in seconds.
 export var move_duration: float = 0.1
 
@@ -15,6 +12,8 @@ export var move_duration: float = 0.1
 var _targets: Array
 # Battler at which the arrow is currently pointing. If the player presses `ui_accept`, this battler will be selected.
 var _target_current: Battler setget _set_target_current
+
+onready var _tween = $Tween
 
 
 func _init() -> void:
@@ -51,7 +50,6 @@ func setup(battlers: Array) -> void:
 	_target_current = _targets[0]
 	scale.x = 1.0 if _target_current.is_party_member else -1.0
 	global_position = _target_current.get_front_anchor_global_position()
-	_anim_player.play("wiggle")
 
 
 func _move_to(target_position: Vector2):

@@ -4,10 +4,8 @@ extends Control
 
 const BattlerIcon := preload("UIBattlerIcon.tscn")
 
-var icons := []
-
-onready var background: TextureRect = $Background
-onready var anim_player: AnimationPlayer = $AnimationPlayer
+onready var _background: TextureRect = $Background
+onready var _anim_player: AnimationPlayer = $AnimationPlayer
 
 
 func setup(battlers: Array) -> void:
@@ -18,27 +16,27 @@ func setup(battlers: Array) -> void:
 			else UIBattlerIcon.Types.ENEMY
 		)
 		var icon: UIBattlerIcon = create_icon(type, battler.ui_data.texture)
+		_background.add_child(icon)
 		battler.connect("readiness_changed", self, "_on_Battler_readiness_changed", [icon])
 
 
-# Creates a new instance of [UIBattlerIcon], initializes it, and adds it as a child of `background`.
+# Creates a new instance of [UIBattlerIcon], initializes it, and adds it as a child of `_background`.
 func create_icon(type: int, texture: Texture) -> UIBattlerIcon:
 	var icon: UIBattlerIcon = BattlerIcon.instance()
-	background.add_child(icon)
 	icon.icon = texture
 	icon.type = type
 	icon.position_range = Vector2(
-		-icon.rect_size.x / 2.0, -icon.rect_size.x / 2.0 + background.rect_size.x
+		-icon.rect_size.x / 2.0, -icon.rect_size.x / 2.0 + _background.rect_size.x
 	)
 	return icon
 
 
 func fade_in() -> void:
-	anim_player.play("fade_in")
+	_anim_player.play("fade_in")
 
 
 func fade_out() -> void:
-	anim_player.play("fade_out")
+	_anim_player.play("fade_out")
 
 
 func _on_Battler_readiness_changed(readiness: float, icon: UIBattlerIcon) -> void:
